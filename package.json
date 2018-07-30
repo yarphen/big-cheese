@@ -1,0 +1,37 @@
+{
+  "name": "big-cheese",
+  "version": "0.0.1",
+  "description": "API service for big deals",
+  "main": "app.js",
+  "scripts": {
+    "forever": "node app.js",
+    "start": "node app.js",
+    "lint": "eslint .",
+    "test": "NODE_ENV=test nyc mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yarphen/big-cheese.git"
+  },
+  "author": "yarphen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yarphen/big-cheese/issues"
+  },
+  "homepage": "https://github.com/yarphen/big-cheese#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^2.0.1",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "forever": "^0.15.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-async-await": "0.0.0",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "proxyquire": "^2.0.1"
+  }
+}
