@@ -30,6 +30,8 @@
     "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-async-await": "0.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-mocha": "^5.1.0",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "proxyquire": "^2.0.1"
