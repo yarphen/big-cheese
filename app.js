@@ -16,7 +16,7 @@ routes(app);
 
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   console.error('Error:', err);
-  res.status(500).json({ error: 'Server error' });
+  res.status(500).json({ error: err.message || 'Server error' });
 });
 
 app.listen(port, () => {
