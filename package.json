@@ -29,6 +29,7 @@
     "sequelize": "^4.38.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^5.2.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-async-await": "0.0.0",
