@@ -1,6 +1,6 @@
 {
   "name": "big-cheese",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "API service for big deals",
   "main": "app.js",
   "scripts": {
