@@ -1,3 +1,6 @@
+const { smtp } = require('config');
+
+const { sendMail } = require('./email');
 const { models: { user } } = require('../models');
 const { makeHash, makeRandomPass } = require('../utils/password');
 
@@ -10,8 +13,12 @@ const reset = async (email) => {
   const newPass = makeRandomPass();
   const passwordHash = makeHash(newPass);
   await user.update({ pass: passwordHash }, { where: { email } });
-  // TODO send to email
-  console.log(newPass);
+  await sendMail({
+    ...smtp,
+    to: email,
+    subject: 'Password reset',
+    text: `Your new password is ${newPass}.`,
+  });
 };
 
 const login = async (email, password) => {
@@ -19,7 +26,7 @@ const login = async (email, password) => {
   if (!u) {
     throw new Error('Login failed');
   }
-  return u.toJSON();
+  return u;
 };
 
 module.exports = {
