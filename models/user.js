@@ -28,6 +28,16 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
   });
+  User.associate = (models) => {
+    User.hasMany(models.Deal, {
+      foreignKey: 'buyerId',
+      as: 'purchases',
+    });
+    User.hasMany(models.Deal, {
+      foreignKey: 'sellerId',
+      as: 'sells',
+    });
+  };
   User.prototype.toJSON = function () {
     const values = Object.assign({}, this.get());
     delete values.pass;
