@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 
+const { STATUS_PROGRESS } = require('../constants');
+
 module.exports = (sequelize) => {
   const Deal = sequelize.define('Deal', {
     dealId: {
@@ -16,13 +18,14 @@ module.exports = (sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-    text: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
     price: {
       type: Sequelize.FLOAT,
+      allowNull: true,
+    },
+    status: {
+      type: Sequelize.TINYINT,
       allowNull: false,
+      defaultValue: STATUS_PROGRESS,
     },
   });
 
@@ -34,6 +37,10 @@ module.exports = (sequelize) => {
     Deal.belongsTo(models.User, {
       foreignKey: 'sellerId',
       as: 'seller',
+    });
+    Deal.hasMany(models.Message, {
+      foreignKey: 'dealId',
+      as: 'deals',
     });
   };
 
