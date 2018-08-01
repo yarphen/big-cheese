@@ -1,9 +1,12 @@
 const handler = require('../utils/handler');
+const { models: { user } } = require('../models');
 
 const findUser = async (req, res) => { // eslint-disable-line
+  const { q } = req.query;
   console.log(req.query);
   console.log(req.body);
-  res.status(200).json({ message: 'dummy' });
+  const users = await user.findByName(q);
+  res.status(200).json(users);
 };
 
 const getUser = async (req, res) => { // eslint-disable-line
