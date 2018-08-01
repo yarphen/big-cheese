@@ -7,7 +7,7 @@ const checkDealAccess = (req, res, next) => {
     if (!myDeal) {
       throw new Error('Deal not found');
     }
-    const { deal: { sellerId, buyerId }} = myDeal;
+    const { deal: { sellerId, buyerId } } = myDeal;
     if (userId !== sellerId && userId !== buyerId) {
       throw new Error('Deal not found'); // No one is allowed to know deal ID except seller and buyer
     }
