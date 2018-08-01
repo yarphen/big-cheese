@@ -7,7 +7,7 @@ const authService = require('../services/auth'); // TODO replace with service te
 const userService = require('../services/user'); // TODO replace with service testing
 const { makeHash } = require('../utils/password');
 
-const mockUser1 = { name: 'Michael', pass: 'abc', email: 'blabla.example@gmail.com' };
+const mockUser1 = { name: 'Michael', password: 'abc', email: 'blabla.example@gmail.com' };
 const mockUser2 = { name: 'Agent 007', password: '123', passwordConfirm: '123', email: 'blabla@gmail.com', about: 'XXX' };
 
 
@@ -21,7 +21,7 @@ describe('Users and auth', function () {
     const users = await userService.findUsers(mockUser1.name);
     expect(users.length, 'Should return only one user').to.be.equal(1);
     expect(users[0].email, 'Should have same email').to.be.equal(mockUser1.email);
-    expect(users[0].pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.pass));
+    expect(users[0].pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.password));
     const newUserJSON = newUser.toJSON();
     expect(newUserJSON.pass, 'Should return no password').to.not.exist;
   });
@@ -31,7 +31,7 @@ describe('Users and auth', function () {
     const users = await userService.findUsers(null, mockUser1.email);
     expect(users.length, 'Should return only one user').to.be.equal(1);
     expect(users[0].email, 'Should have same email').to.be.equal(mockUser1.email);
-    expect(users[0].pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.pass));
+    expect(users[0].pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.password));
     const newUserJSON = newUser.toJSON();
     expect(newUserJSON.pass, 'Should return no password').to.not.exist;
   });
@@ -42,7 +42,7 @@ describe('Users and auth', function () {
 
     expect(sameUser, 'Should return an object').to.be.an('object');
     expect(sameUser.email, 'Should have same email').to.be.equal(mockUser1.email);
-    expect(sameUser.pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.pass));
+    expect(sameUser.pass, 'Should have selected pass').to.be.equal(makeHash(mockUser1.password));
     const sameUserJSON = sameUser.toJSON();
     expect(sameUserJSON.pass, 'Should return no password').to.not.exist;
   });
@@ -77,7 +77,7 @@ describe('Users and auth', function () {
     expect(sameUser.email, 'Should have new email').to.be.equal(mockUser1.email);
     expect(sameUser.name, 'Should have new name').to.be.equal(mockUser1.name);
     expect(sameUser.about, 'Should have same about').to.not.exist;
-    expect(sameUser.pass, 'Should have same pass').to.be.equal(makeHash(mockUser1.pass));
+    expect(sameUser.pass, 'Should have same pass').to.be.equal(makeHash(mockUser1.password));
 
     const sameUserJSON = sameUser.toJSON();
     expect(sameUserJSON.pass, 'Should return no password').to.not.exist;
@@ -94,7 +94,7 @@ describe('Users and auth', function () {
     expect(sameUser.email, 'Should have new email').to.be.equal(mockUser1.email);
     expect(sameUser.name, 'Should have new name').to.be.equal(mockUser1.name);
     expect(sameUser.about, 'Should have same about').to.not.exist;
-    expect(sameUser.pass, 'Should have same pass').to.be.equal(makeHash(mockUser1.pass));
+    expect(sameUser.pass, 'Should have same pass').to.be.equal(makeHash(mockUser1.password));
 
     const sameUserJSON = sameUser.toJSON();
     expect(sameUserJSON.pass, 'Should return no password').to.not.exist;

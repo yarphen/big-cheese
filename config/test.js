@@ -7,4 +7,7 @@ module.exports = {
     username: process.env.DB_TEST_USERNAME,
     password: process.env.DB_TEST_PASSWORD,
   },
+  jwt: {
+    secret: process.env.JWT_TEST_SECRET,
+  },
 };
