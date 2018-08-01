@@ -1,5 +1,5 @@
 const { models: { user }, Sequelize: { Op } } = require('../models');
-const hash = require('../utils/hash');
+const { makeHash } = require('../utils/password');
 
 const getUser = userId => user.findById(userId);
 
@@ -26,7 +26,7 @@ const updateProfile = async (userId, profileUpdate) => {
     if (password !== passwordConfirm) {
       throw new Error('Passwords do not match');
     }
-    update.pass = hash(password);
+    update.pass = makeHash(password);
   }
 };
 
