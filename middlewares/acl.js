@@ -1,12 +1,13 @@
 const dealService = require('../services/deal');
 
 const checkDealAccess = (req, res, next) => {
-  const { userId } = req.query; // TODO AUTH
-  dealService.getDeal(req.params.dealId).then((myDeal) => {
+  const { userId } = req.user || {};
+  const paramsDealId = parseInt(req.params.dealId, 10);
+  dealService.getDeal(userId, paramsDealId).then((myDeal) => {
     if (!myDeal) {
       throw new Error('Deal not found');
     }
-    const { sellerId, buyerId } = myDeal;
+    const { deal: { sellerId, buyerId }} = myDeal;
     if (userId !== sellerId && userId !== buyerId) {
       throw new Error('Deal not found'); // No one is allowed to know deal ID except seller and buyer
     }
@@ -15,8 +16,10 @@ const checkDealAccess = (req, res, next) => {
 };
 
 const checkUserAccess = (req, res, next) => {
-  const { userId } = req.query; // TODO AUTH
-  if (req.params.userId !== userId) {
+  console.log(req.user, req.params.userId);
+  const { userId } = req.user || {};
+  const paramsUserId = parseInt(req.params.userId, 10);
+  if (paramsUserId !== userId) {
     next(new Error('Permission denied'));
   }
   next();

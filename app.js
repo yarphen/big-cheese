@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 
 require('./models');
+require('./services/passport');
 
 const routes = require('./routes');
 

@@ -2,7 +2,7 @@ const { models: { user } } = require('../models');
 const { makeHash, makeRandomPass } = require('../utils/password');
 
 const signup = async (newUser) => {
-  const passwordHash = makeHash(newUser.pass);
+  const passwordHash = makeHash(newUser.password);
   return user.create({ ...newUser, pass: passwordHash });
 };
 
@@ -14,7 +14,16 @@ const reset = async (email) => {
   console.log(newPass);
 };
 
+const login = async (email, password) => {
+  const u = await user.findOne({ where: { email, pass: makeHash(password) } });
+  if (!u) {
+    throw new Error('Login failed');
+  }
+  return u.toJSON();
+};
+
 module.exports = {
   signup,
   reset,
+  login,
 };

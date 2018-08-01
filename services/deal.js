@@ -44,7 +44,7 @@ const getDeal = async (userId, dealId) => {
   }
   const { sellerId, buyerId } = myDeal;
   if (sellerId !== userId && buyerId !== userId) {
-    throw new Error('This is not your deal');
+    throw new Error('No such deal');
   }
   const messages = await message.findAll({ where: { dealId } });
   return { deal: myDeal, messages };

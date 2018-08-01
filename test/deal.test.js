@@ -6,9 +6,11 @@ const { models: { user, deal, message } } = require('../models'); // TODO replac
 const authService = require('../services/auth'); // TODO replace with service testing
 const dealService = require('../services/deal'); // TODO replace with service testing
 
-const user1 = { name: 'Michael', pass: 'abc', email: 'user1@gmail.com' };
-const user2 = { name: 'Michael', pass: 'abc', email: 'user2@gmail.com' };
-const user3 = { name: 'Michael', pass: 'abc', email: 'user3@gmail.com' };
+const { STATUS_ACCEPTED, STATUS_PROGRESS, STATUS_REJECTED, REJECTION_PRICE } = require('../constants');
+
+const user1 = { name: 'Michael', password: 'abc', email: 'user1@gmail.com' };
+const user2 = { name: 'Michael', password: 'abc', email: 'user2@gmail.com' };
+const user3 = { name: 'Michael', password: 'abc', email: 'user3@gmail.com' };
 
 const shouldThrow = async (promise, msg) => {
   let error = false;
@@ -44,7 +46,7 @@ describe('Deals and messages', function () {
     expect(checkDeal, 'Should have valid deal').to.exist;
     expect(checkMessage, 'Should have valid message').to.exist;
     expect(checkDeal.price, 'Should have same price').to.be.eq(1000);
-    expect(checkDeal.status, 'Should have initial status').to.be.eq(0);
+    expect(checkDeal.status, 'Should have initial status').to.be.eq(STATUS_PROGRESS);
     expect(checkDeal.dealId, 'Should have same id').to.be.eq(deal2.dealId);
     expect(checkMessage.text, 'Should have same text').to.be.eq('Hello! I have some drugs');
     expect(checkMessage.price, 'Should have same price').to.be.eq(1000);
@@ -64,7 +66,7 @@ describe('Deals and messages', function () {
     const { deal: myDeal } = await dealService.createNewDeal(user1.userId, { buyerId: user2.userId, text: 'Hello! I have some drugs', price: 1000 });
     await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nice price!', price: 1000 });
     const { deal: updatedDeal } = await dealService.getDeal(user1.userId, myDeal.dealId);
-    expect(updatedDeal.status, 'Status should be closed/accepted').to.be.eq(1);
+    expect(updatedDeal.status, 'Status should be closed/accepted').to.be.eq(STATUS_ACCEPTED);
   });
 
   it('Deal is closed if same price has been sent [2]', async function () {
@@ -72,28 +74,28 @@ describe('Deals and messages', function () {
     await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: 100 });
     await dealService.postMessage(user1.userId, myDeal.dealId, { text: 'Oh, you have a gun!', price: 100 });
     const { deal: updatedDeal } = await dealService.getDeal(user1.userId, myDeal.dealId);
-    expect(updatedDeal.status, 'Status should be closed/accepted').to.be.eq(1);
+    expect(updatedDeal.status, 'Status should be closed/accepted').to.be.eq(STATUS_ACCEPTED);
   });
 
   it('Deal is closed if -1 has been sent [1]', async function () {
     const { deal: myDeal } = await dealService.createNewDeal(user1.userId, { buyerId: user2.userId, text: 'Hello! I have some drugs', price: 1000 });
     await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: 100 });
-    await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: -1 });
+    await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: REJECTION_PRICE });
     const { deal: updatedDeal } = await dealService.getDeal(user1.userId, myDeal.dealId);
-    expect(updatedDeal.status, 'Status should be closed/rejected').to.be.eq(-1);
+    expect(updatedDeal.status, 'Status should be closed/rejected').to.be.eq(STATUS_REJECTED);
   });
 
   it('Deal is closed if -1 has been sent [2]', async function () {
     const { deal: myDeal } = await dealService.createNewDeal(user1.userId, { buyerId: user2.userId, text: 'Hello! I have some drugs', price: 1000 });
     await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: 100 });
-    await dealService.postMessage(user1.userId, myDeal.dealId, { text: 'Nope!', price: -1 });
+    await dealService.postMessage(user1.userId, myDeal.dealId, { text: 'Nope!', price: REJECTION_PRICE });
     const { deal: updatedDeal } = await dealService.getDeal(user1.userId, myDeal.dealId);
-    expect(updatedDeal.status, 'Status should be closed/rejected').to.be.eq(-1);
+    expect(updatedDeal.status, 'Status should be closed/rejected').to.be.eq(STATUS_REJECTED);
   });
 
   it('If deal is closed no messages is allowed', async function () {
     const { deal: myDeal } = await dealService.createNewDeal(user1.userId, { buyerId: user2.userId, text: 'Hello! I have some drugs', price: 1000 });
-    await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: -1 });
+    await dealService.postMessage(user2.userId, myDeal.dealId, { text: 'Nope!', price: REJECTION_PRICE });
     let error = false;
     try {
       await dealService.postMessage(user1.userId, myDeal.dealId, { text: 'Discount price!', price: 100 });
