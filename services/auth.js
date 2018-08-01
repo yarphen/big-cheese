@@ -2,7 +2,7 @@ const { models: { user } } = require('../models');
 const { makeHash, makeRandomPass } = require('../utils/password');
 
 const signup = async (newUser) => {
-  const passwordHash = makeHash(newUser.password);
+  const passwordHash = makeHash(newUser.pass);
   return user.create({ ...newUser, pass: passwordHash });
 };
 

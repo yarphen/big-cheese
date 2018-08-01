@@ -10,7 +10,7 @@ const findUsers = (name, email) => user.findAll({
   ],
 });
 
-const updateProfile = async (userId, profileUpdate) => {
+const updateProfile = (userId, profileUpdate) => {
   const { name, email, about, password, passwordConfirm } = profileUpdate;
   const update = {};
   if (typeof name !== 'undefined') {
@@ -28,6 +28,7 @@ const updateProfile = async (userId, profileUpdate) => {
     }
     update.pass = makeHash(password);
   }
+  return user.update(update, { where: { userId } });
 };
 
 
