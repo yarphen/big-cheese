@@ -27,6 +27,6 @@ const updateProfile = async (req, res) => { // eslint-disable-line
 
 module.exports = (app) => {
   app.get('/users', handler(findUsers)); // TODO auth
-  app.get('/users/:id', handler(getUser)); // TODO auth
-  app.patch('/users/:id', checkUserAccess, handler(updateProfile)); // TODO auth
+  app.get('/users/:userId', handler(getUser)); // TODO auth
+  app.patch('/users/:userId', checkUserAccess, handler(updateProfile)); // TODO auth
 };

@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
       autoIncrement: true,
     },
     direction: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     text: {

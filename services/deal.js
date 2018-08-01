@@ -1,4 +1,4 @@
-const { models: { deal, message }, sequelize, Sequelize: { Op } } = require('../models');
+const { models: { deal, message, user }, sequelize, Sequelize: { Op } } = require('../models');
 const {
   STATUS_PROGRESS,
   STATUS_ACCEPTED,
@@ -30,7 +30,7 @@ const createUpdateQuery = (myPrice, partnerPrice) => {
   return { price: myPrice };
 };
 
-const listUserDeals = userId => deal.find({
+const listUserDeals = userId => deal.findAll({
   [Op.or]: [
     { where: { selledrId: userId } },
     { where: { buyerId: userId } },
@@ -46,7 +46,8 @@ const getDeal = async (userId, dealId) => {
   if (sellerId !== userId && buyerId !== userId) {
     throw new Error('This is not your deal');
   }
-  return myDeal;
+  const messages = await message.findAll({ where: { dealId } });
+  return { deal: myDeal, messages };
 };
 
 const createNewDeal = async (userId, msg) => {
@@ -58,10 +59,14 @@ const createNewDeal = async (userId, msg) => {
     if (buyerId === userId) {
       throw new Error('You can\'t have a deal with youself');
     }
-    const myDeal = await deal.create({ selledrId: userId, buyerId }, { transaction: t });
+    const buyer = await user.findById(buyerId);
+    if (!buyer) {
+      throw new Error('You can\'t have a deal with non-existing user');
+    }
+    const myDeal = await deal.create({ sellerId: userId, buyerId, price }, { transaction: t });
     const { dealId } = myDeal;
     const newMsg = await message.create(
-      { text, price, direction: SELLER_TO_BUYER, dealId },
+      { text, price, direction: SELLER_TO_BUYER.direction, dealId },
       { transaction: t },
     );
     return { message: newMsg, deal: myDeal };
@@ -93,6 +98,8 @@ const postMessage = async (userId, dealId, msg) => {
     const update = createUpdateQuery(myMsg.price, partnerMsg.price);
 
     await deal.update(update, { where: { dealId } }, { transaction: t });
+
+    return myMsg;
   });
 };
 
