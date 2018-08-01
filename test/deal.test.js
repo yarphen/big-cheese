@@ -35,7 +35,10 @@ describe('Deals and messages', function () {
 
   it('Deal and message are creating with new offer', async function () {
     const { deal: myDeal, message: myMsg } = await dealService.createNewDeal(user1.userId, { buyerId: user2.userId, text: 'Hello! I have some drugs', price: 1000 });
-    const { deal: checkDeal, messages: [checkMessage] = [] } = await dealService.getDeal(user1.userId, myDeal.dealId);
+    const {
+      deal: checkDeal,
+      messages: [checkMessage] = [],
+    } = await dealService.getDeal(user1.userId, myDeal.dealId);
     await dealService.getDeal(user2.userId, myDeal.dealId);
     const [deal2] = await dealService.listUserDeals(user1.userId);
     expect(checkDeal, 'Should have valid deal').to.exist;
