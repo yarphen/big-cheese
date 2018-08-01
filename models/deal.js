@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     status: {
-      type: Sequelize.TINYINT,
+      type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: STATUS_PROGRESS,
     },
