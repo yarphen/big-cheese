@@ -56,23 +56,40 @@ After deploying with previous shell script, you can run automated tests with fol
 
 `PORT` - sets the port to run the API
 
+
 `DB_HOST` - sets the **prod** host of postgres db connection
+
 `DB_PORT` - sets the **prod** port of postgres db connection
+
 `DB_NAME` - sets the **prod** name of postgres db connection
+
 `DB_USERNAME` - sets the **prod** username for postgres db connection
+
 `DB_PASSWORD` - sets the **prod** password for postgres db connection
 
+
 `DB_TEST_HOST` - sets the **test** host of postgres db connection
+
 `DB_TEST_PORT` - sets the **test** port of postgres db connection
+
 `DB_TEST_NAME` - sets the **test** name of postgres db connection
+
 `DB_TEST_USERNAME` - sets the **test** username for postgres db connection
+
 `DB_TEST_PASSWORD` - sets the **test** password for postgres db connection
 
+
 `JWT_SECRET` - sets the **prod** jwt secret for making Json Web Tokens.
+
 `JWT_TEST_SECRET` - sets the **test** jwt secret for making Json Web Tokens.
 
+
 `SMTP_HOST` - sets the host of smtp server to send reset pass email
+
 `SMTP_PORT` - sets the port of smtp server to send reset pass email
+
 `SMTP_USER` - sets the username for smtp server to send reset pass email
+
 `SMTP_PASS` - sets the password for smtp server to send reset pass email
+
 `SMTP_SECURE` - sets the **secure** flag for smtp server connection
