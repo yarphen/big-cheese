@@ -4,7 +4,7 @@
   "description": "API service for big deals",
   "main": "app.js",
   "scripts": {
-    "forever": "node app.js",
+    "forever": "forever app.js",
     "start": "node app.js",
     "lint": "eslint .",
     "test": "NODE_ENV=test nyc mocha"
