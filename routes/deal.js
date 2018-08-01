@@ -1,6 +1,8 @@
 const dealService = require('../services/deal');
 
 const handler = require('../utils/handler');
+const { checkDealAccess } = require('../middlewares/acl');
+const { dealMessageValidate } = require('../middlewares/validate');
 
 const getAllDeals = async (req, res) => { // eslint-disable-line
   console.log(req.body);
@@ -34,7 +36,7 @@ const getDeal = async (req, res) => { // eslint-disable-line
 
 module.exports = (app) => {
   app.get('/deals', handler(getAllDeals)); // TODO auth
-  app.post('/deals', handler(postNewDeal)); // TODO auth
-  app.post('/deals/:id', handler(postNewMsg)); // TODO auth
-  app.get('/deals/:id', handler(getDeal)); // TODO auth
+  app.post('/deals', dealMessageValidate, handler(postNewDeal)); // TODO auth
+  app.post('/deals/:dealId', checkDealAccess, dealMessageValidate, handler(postNewMsg)); // TODO auth
+  app.get('/deals/:dealId', checkDealAccess, handler(getDeal)); // TODO auth
 };

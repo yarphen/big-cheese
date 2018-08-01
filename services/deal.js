@@ -1,5 +1,4 @@
 const { models: { deal, message }, sequelize, Sequelize: { Op } } = require('../models');
-const { validateDirections, validateQuery } = require('../utils/validate');
 const {
   STATUS_PROGRESS,
   STATUS_ACCEPTED,
@@ -12,17 +11,13 @@ const {
 
 const getDirections = (myDeal, userId) => {
   const { sellerId, buyerId } = myDeal;
-  let direction = -1;
-  let oppositeDirection = -1;
   if (userId === sellerId) {
-    direction = SELLER_TO_BUYER;
-    oppositeDirection = BUYER_TO_SELLER;
+    return SELLER_TO_BUYER;
   }
   if (userId === buyerId) {
-    direction = BUYER_TO_SELLER;
-    oppositeDirection = SELLER_TO_BUYER;
+    return BUYER_TO_SELLER;
   }
-  return { direction, oppositeDirection };
+  throw new Error('Permission denied'); // should not happen; should be caught before
 };
 
 const createUpdateQuery = (myPrice, partnerPrice) => {
@@ -73,7 +68,7 @@ const createNewDeal = async (userId, msg) => {
   });
 };
 
-const postMessage = async (dealId, userId, msg) => {
+const postMessage = async (userId, dealId, msg) => {
   const { text, price } = msg;
   return sequelize.transaction(async (t) => {
     const myDeal = await deal.findById(dealId, { transaction: t });
@@ -86,14 +81,18 @@ const postMessage = async (dealId, userId, msg) => {
       throw new Error('The deal is closed');
     }
 
-    const { direction, oppositeDirection } = validateDirections(getDirections(myDeal, userId));
+    const { direction, oppositeDirection } = getDirections(myDeal, userId);
 
     const partnerMsg = await message.findOne({ where: { dealId, direction: oppositeDirection }, order: [['createdAt', 'DESC']] }, { transaction: t });
     const myMsg = await message.create({ text, price, direction, dealId }, { transaction: t });
 
-    const update = validateQuery(createUpdateQuery(myMsg.price, partnerMsg.price));
+    if (!partnerMsg) {
+      throw new Error('Wait for partner response');
+    }
 
-    await deal.update(update, { where: { dealId } });
+    const update = createUpdateQuery(myMsg.price, partnerMsg.price);
+
+    await deal.update(update, { where: { dealId } }, { transaction: t });
   });
 };
 
