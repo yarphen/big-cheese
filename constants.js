@@ -5,4 +5,5 @@ module.exports = {
   REJECTION_PRICE: -1,
   SELLER_TO_BUYER: 1,
   BUYER_TO_SELLER: 0,
+  PRICE_TRESHHOLD: 0.01,
 };
