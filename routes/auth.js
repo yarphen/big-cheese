@@ -7,7 +7,6 @@ const authService = require('../services/auth');
 
 const login = async (req, res) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
-    console.log(err, user, info);
     if (err || !user) {
       res.status(401).json({ message: info ? info.message : 'Login failed', user });
       return;

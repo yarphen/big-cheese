@@ -16,7 +16,6 @@ const checkDealAccess = (req, res, next) => {
 };
 
 const checkUserAccess = (req, res, next) => {
-  console.log(req.user, req.params.userId);
   const { userId } = req.user || {};
   const paramsUserId = parseInt(req.params.userId, 10);
   if (paramsUserId !== userId) {
