@@ -8,4 +8,12 @@ const dealMessageValidate = (req, res, next) => {
   next();
 };
 
-module.exports = { dealMessageValidate };
+const userSearchValidate = (req, res, next) => {
+  const { email, name } = req.query;
+  if (!email && !name) {
+    next(new Error('You should specify at least one param: name or email'));
+  }
+  next();
+};
+
+module.exports = { dealMessageValidate, userSearchValidate };

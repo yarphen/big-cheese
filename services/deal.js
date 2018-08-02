@@ -31,10 +31,12 @@ const createUpdateQuery = (myPrice, partnerPrice) => {
 };
 
 const listUserDeals = userId => deal.findAll({
-  [Op.or]: [
-    { where: { selledrId: userId } },
-    { where: { buyerId: userId } },
-  ],
+  where: {
+    [Op.or]: [
+      { sellerId: userId },
+      { buyerId: userId },
+    ],
+  },
 });
 
 const getDeal = async (userId, dealId) => {

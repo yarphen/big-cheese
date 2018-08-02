@@ -3,6 +3,7 @@ const passport = require('passport');
 const handler = require('../utils/handler');
 const userService = require('../services/user');
 const { checkUserAccess } = require('../middlewares/acl');
+const { userSearchValidate } = require('../middlewares/validate');
 
 const findUsers = async (req, res) => {
   const { name, email } = req.query;
@@ -27,7 +28,7 @@ const updateProfile = async (req, res) => {
 };
 
 module.exports = (app) => {
-  app.get('/users', passport.authenticate('jwt', { session: false }), handler(findUsers));
+  app.get('/users', passport.authenticate('jwt', { session: false }), userSearchValidate, handler(findUsers));
   app.get('/users/:userId', passport.authenticate('jwt', { session: false }), handler(getUser));
   app.patch('/users/:userId', passport.authenticate('jwt', { session: false }), checkUserAccess, handler(updateProfile));
 };

@@ -4,10 +4,12 @@ const { makeHash } = require('../utils/password');
 const getUser = userId => user.findById(userId);
 
 const findUsers = (name, email) => user.findAll({
-  [Op.and]: [
-    { where: { name: { [Op.like]: `${name}%` } } },
-    { where: { email: { [Op.like]: `${email}%` } } },
-  ],
+  where: {
+    [Op.and]: [
+      name && { name: { [Op.like]: `${name}%` } },
+      email && { email: { [Op.like]: `${email}%` } },
+    ].filter(item => !!item),
+  },
 });
 
 const updateProfile = (userId, profileUpdate) => {

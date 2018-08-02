@@ -6,6 +6,10 @@ const { makeHash, makeRandomPass } = require('../utils/password');
 
 const signup = async (newUser) => {
   const passwordHash = makeHash(newUser.password);
+  const userWithSameEmail = await user.findOne({ where: { email: newUser.email } });
+  if (userWithSameEmail) {
+    throw new Error('User with this email already exists');
+  }
   return user.create({ ...newUser, pass: passwordHash });
 };
 

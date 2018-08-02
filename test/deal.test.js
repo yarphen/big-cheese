@@ -51,6 +51,10 @@ describe('Deals and messages', function () {
     expect(checkMessage.text, 'Should have same text').to.be.eq('Hello! I have some drugs');
     expect(checkMessage.price, 'Should have same price').to.be.eq(1000);
     expect(checkMessage.messageId, 'Should have same id').to.be.eq(myMsg.messageId);
+    const deals2 = await dealService.listUserDeals(user2.userId);
+    const deals3 = await dealService.listUserDeals(user3.userId);
+    expect(deals2.length, 'Buyer should see it too').to.be.eq(1);
+    expect(deals3.length, 'User that is not a buyer or a seller should not see it').to.be.eq(0);
   });
 
 
