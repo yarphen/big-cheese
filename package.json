@@ -7,7 +7,7 @@
     "forever": "forever app.js",
     "start": "node app.js",
     "lint": "eslint .",
-    "test": "NODE_ENV=test nyc mocha"
+    "test": "NODE_ENV=test nyc mocha --no-timeouts"
   },
   "repository": {
     "type": "git",
