@@ -183,7 +183,7 @@ Big Cheese API is backend core for some platform that allows to offer some goods
 }
 ```
 
-## User API
+## Deals API
 
 ### **USER DEALS LIST**
 
@@ -193,19 +193,26 @@ Big Cheese API is backend core for some platform that allows to offer some goods
 * **DESCRIPTION**: Gets all deals where the user is a buyer or a seller
 * **SAMPLE RESPONSES**:
 ```
-{
-    "userId": 4,
-    "email": "mynewemail@gmail.com",
-    "name": "MyNewName",
-    "about": "I'm agent 007",
-    "createdAt": "2018-08-02T09:13:41.316Z",
-    "updatedAt": "2018-08-02T09:43:14.758Z"
-}
-```
-```
-{
-    "error": "Passwords do not match"
-}
+[
+    {
+        "dealId": 6,
+        "sellerId": 4,
+        "buyerId": 1,
+        "price": null,
+        "status": 0,
+        "createdAt": "2018-08-02T09:55:20.650Z",
+        "updatedAt": "2018-08-02T09:55:20.650Z"
+    },
+    {
+        "dealId": 5,
+        "sellerId": 4,
+        "buyerId": 1,
+        "price": 1000,
+        "status": 1,
+        "createdAt": "2018-08-02T09:53:39.186Z",
+        "updatedAt": "2018-08-02T10:14:14.938Z"
+    }
+]
 ```
 
 ### **CREATE NEW DEAL**
