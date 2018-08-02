@@ -1,5 +1,7 @@
 # Big Cheese API
 
+[![CircleCI](https://circleci.com/gh/yarphen/big-cheese.svg?style=svg)](https://circleci.com/gh/yarphen/big-cheese)
+
 Big Cheese API is backend core for some platform that allows to offer some goods with some price and then change, reject or accept these offers. This is test project.
 
 # How to use?
