@@ -5,6 +5,331 @@
 Big Cheese API is backend core for some platform that allows to offer some goods with some price and then change, reject or accept these offers. This is test project.
 
 # How to use?
+
+## Auth API
+
+### **SIGNUP**
+
+* **URL**: `/auth/signup`
+* **METHOD**: `POST`
+* **DESCRIPTION**: Creates new account
+* **SAMPLE REQUEST**:
+```
+{
+	"password": "abc",
+	"email": "example@gmail.com",
+	"name": "Test Test",
+	"about": "XXX"
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "userId": 4,
+    "email": "example@gmail.com",
+    "name": "Test Test",
+    "about": "XXX",
+    "createdAt": "2018-08-02T09:13:41.316Z",
+    "updatedAt": "2018-08-02T09:17:35.679Z"
+}
+```
+```
+{
+  "error": "User with this email already exists"
+}
+```
+
+### **LOGIN**
+
+* **URL**: `/auth/login`
+* **METHOD**: `POST`
+* **DESCRIPTION**: Allows you to log in and get your auth token. After getting token use it for bearer Authorization.
+* **SAMPLE REQUEST**:
+```
+{
+	"password": "abc",
+	"email": "example@gmail.com"
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "user": {
+        "userId": 4,
+        "email": "example@gmail.com",
+        "name": "Test Test",
+        "about": "XXX",
+        "createdAt": "2018-08-02T09:13:41.316Z",
+        "updatedAt": "2018-08-02T09:17:35.679Z",
+        "hash": "6ed2bf5ce8c7bb7d279ecafcc57498c10e20a4a9889d86afb961426fce40d5b0d2104f4132bb99abee23b7ebe617940393ee70b6e7ce0b1462c57f2b94039000"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJuYW1lIjoiVGVzdCBUZXN0IiwiYWJvdXQiOiJYWFgiLCJjcmVhdGVkQXQiOiIyMDE4LTA4LTAyVDA5OjEzOjQxLjMxNloiLCJ1cGRhdGVkQXQiOiIyMDE4LTA4LTAyVDA5OjE3OjM1LjY3OVoiLCJoYXNoIjoiNmVkMmJmNWNlOGM3YmI3ZDI3OWVjYWZjYzU3NDk4YzEwZTIwYTRhOTg4OWQ4NmFmYjk2MTQyNmZjZTQwZDViMGQyMTA0ZjQxMzJiYjk5YWJlZTIzYjdlYmU2MTc5NDAzOTNlZTcwYjZlN2NlMGIxNDYyYzU3ZjJiOTQwMzkwMDAiLCJpYXQiOjE1MzMyMDE1MTB9.cQB4v2O-4VrwxadgUzyMDea9xii0JwD1wWR3Cd6TDCM"
+}
+```
+```
+{
+    "message": "Login failed"
+}
+```
+
+### **RESET PASSWORD**
+
+* **URL**: `/auth/reset`
+* **METHOD**: `POST`
+* **DESCRIPTION**: Resets your password if you provide correct email and sends it to your email.
+* **SAMPLE REQUEST**:
+```
+{
+	"email": "example@gmail.com"
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "message": "Check your email, please"
+}
+```
+
+### **VERIFY YOU ARE LOGGED IN**
+
+* **URL**: `/auth/verify`
+* **METHOD**: `POST`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Retrieves your user if you are logged in
+* **SAMPLE RESPONSES**:
+```
+{
+    "user": {
+        "userId": 4,
+        "email": "example@gmail.com",
+        "name": "Test Test",
+        "about": "XXX",
+        "createdAt": "2018-08-02T09:13:41.316Z",
+        "updatedAt": "2018-08-02T09:17:35.679Z"
+    }
+}
+```
+
+## User API
+
+### **USER SEARCH**
+
+* **URL**: `/users?name=<name>&email=<email>`
+* **METHOD**: `GET`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Retrieves list of users by params. Maximum is 10. You should specify at least one param: email or name.
+* **SAMPLE RESPONSES**:
+```
+[
+    {
+        "userId": 4,
+        "email": "example@gmail.com",
+        "name": "Test Test",
+        "about": "XXX",
+        "createdAt": "2018-08-02T09:13:41.316Z",
+        "updatedAt": "2018-08-02T09:17:35.679Z"
+    }
+]
+```
+
+### **GET USER BY ID**
+
+* **URL**: `/users/:id`
+* **METHOD**: `GET`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Gets user by id
+* **SAMPLE RESPONSES**:
+```
+{
+    "userId": 4,
+    "email": "example@gmail.com",
+    "name": "Test Test",
+    "about": "XXX",
+    "createdAt": "2018-08-02T09:13:41.316Z",
+    "updatedAt": "2018-08-02T09:17:35.679Z"
+}
+```
+
+### **PROFILE UPDATE**
+
+* **URL**: `/users/:id`
+* **METHOD**: `PATCH`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Updates specified fields of your profile if you set non-empty values to them. Allows to change your password: for this you should specify `password` and `passwordConfirm` both. They should match.
+* **SAMPLE REQUEST**:
+```
+{
+    "email": "mynewemail@gmail.com",
+    "name": "MyNewName",
+    "about": "I'm agent 007",
+    "password": "MySuperCryptoPasswordBlaBlaBla",
+    "passwordConfirm": "MySuperCryptoPasswordBlaBlaBla"
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "userId": 4,
+    "email": "mynewemail@gmail.com",
+    "name": "MyNewName",
+    "about": "I'm agent 007",
+    "createdAt": "2018-08-02T09:13:41.316Z",
+    "updatedAt": "2018-08-02T09:43:14.758Z"
+}
+```
+```
+{
+    "error": "Passwords do not match"
+}
+```
+
+## User API
+
+### **USER DEALS LIST**
+
+* **URL**: `/deals`
+* **METHOD**: `GET`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Gets all deals where the user is a buyer or a seller
+* **SAMPLE RESPONSES**:
+```
+{
+    "userId": 4,
+    "email": "mynewemail@gmail.com",
+    "name": "MyNewName",
+    "about": "I'm agent 007",
+    "createdAt": "2018-08-02T09:13:41.316Z",
+    "updatedAt": "2018-08-02T09:43:14.758Z"
+}
+```
+```
+{
+    "error": "Passwords do not match"
+}
+```
+
+### **CREATE NEW DEAL**
+
+* **URL**: `/deals`
+* **METHOD**: `POST`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Gets deal details
+* **SAMPLE REQUEST**:
+```
+{
+    "buyerId": 1,
+    "text": "I have something for you",
+    "price": 100
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "message": {
+        "messageId": 6,
+        "text": "I have something for you",
+        "price": 100,
+        "direction": 1,
+        "dealId": 5,
+        "updatedAt": "2018-08-02T09:53:39.207Z",
+        "createdAt": "2018-08-02T09:53:39.207Z"
+    },
+    "deal": {
+        "status": 0,
+        "dealId": 5,
+        "sellerId": 4,
+        "buyerId": 1,
+        "price": 100,
+        "updatedAt": "2018-08-02T09:53:39.186Z",
+        "createdAt": "2018-08-02T09:53:39.186Z"
+    }
+}
+```
+```
+{
+    "error": "Could not set negative price"
+}
+```
+```
+{
+    "error": "notNull Violation: Message.price cannot be null"
+}
+```
+
+### **GET DEAL DETAILS AND MESSAGES**
+
+* **URL**: `/deals/:id`
+* **METHOD**: `GET`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Gets deal details. Returns 'No such deal' message if you do not have access to it or it does not exist.
+* **SAMPLE RESPONSES**:
+```
+{
+    "deal": {
+        "dealId": 5,
+        "sellerId": 4,
+        "buyerId": 1,
+        "price": 100,
+        "status": 0,
+        "createdAt": "2018-08-02T09:53:39.186Z",
+        "updatedAt": "2018-08-02T09:53:39.186Z"
+    },
+    "messages": [
+        {
+            "messageId": 6,
+            "direction": 1,
+            "text": "I have something for you",
+            "price": 100,
+            "dealId": 5,
+            "createdAt": "2018-08-02T09:53:39.207Z",
+            "updatedAt": "2018-08-02T09:53:39.207Z"
+        }
+    ]
+}
+```
+```
+{
+    "error": "No such deal"
+}
+```
+
+### **POST NEW MESSAGE TO DEAL**
+
+* **URL**: `/deals/:id`
+* **METHOD**: `POST`
+* **NEEDS AUTHORIZATION**
+* **DESCRIPTION**: Posts new message to the deal. If you agree same price or -1 as price, the deal will be closed. Notice that you should wait for initial response from buyer to post your messages after creating a deal.
+* **SAMPLE REQUEST**:
+```
+{
+    "text": "I'm joking. It costs much more",
+    "price": 1000
+}
+```
+* **SAMPLE RESPONSES**:
+```
+{
+    "messageId": 10,
+    "text": "I'm joking. It costs much more",
+    "price": 1000,
+    "direction": 1,
+    "dealId": 5,
+    "updatedAt": "2018-08-02T10:06:24.131Z",
+    "createdAt": "2018-08-02T10:06:24.131Z"
+}
+```
+```
+{
+    "error": "Wait for partner response"
+}
+```
+```
+{
+    "error": "No such deal"
+}
+```
+
+# How to run?
 You can:
   - Clone manually, install node_modules, pass own environemnt variables (with .envrc file etc)
   - ... or just build it with docker
