@@ -328,6 +328,11 @@ Big Cheese API is backend core for some platform that allows to offer some goods
     "error": "No such deal"
 }
 ```
+```
+{
+    "error": "The deal is closed"
+}
+```
 
 # How to run?
 You can:
